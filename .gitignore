@@ -1,0 +1,8 @@
+artifacts/
+node_modules/
+data/
+recordings/
+logs/
+*.log
+.cache/
+

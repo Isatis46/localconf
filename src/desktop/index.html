@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LocalConf</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="rail"><div class="logo">L<span>c</span></div><span class="rail-label">LOCALCONF</span><div class="rail-bottom">LAN<br>ONLY</div></aside>
+  <main>
+    <header><div><div class="eyebrow">YOUR NETWORK. YOUR CONVERSATION.</div><h1>LocalConf <span class="version">PREVIEW 0.1</span></h1></div><div id="connection" class="badge">● Offline</div></header>
+    <div id="notification" role="alert" hidden></div>
+    <section id="welcome">
+      <div class="intro"><h2>A meeting space.<br>Right here on your network.</h2><p>Start a local host or connect to a colleague. Your audio, video and screen stay on the LAN.</p></div>
+      <label class="name-label">Your display name<input id="display-name" maxlength="80" placeholder="e.g. Alex Morgan" autocomplete="off"></label>
+      <div class="connect-grid">
+        <article class="card"><div class="card-icon">↗</div><h3>Start a host</h3><p>Bring your team together. This computer manages rooms and forwards media.</p><label>Network interface<select id="interfaces"></select></label><button id="start-host" class="primary">Start host <span>→</span></button><small>Allow TCP 8443 and UDP 40000 on your private network when Windows asks.</small></article>
+        <article class="card"><div class="card-icon blue">⇄</div><h3>Join a host</h3><p>Enter the host’s LAN address. Verify its fingerprint before your first connection.</p><label>Host address<input id="host-address" placeholder="192.168.1.20:8443" autocomplete="off"></label><button id="inspect-host">Find host <span>→</span></button><small>No internet, account, or installation required. Manual IP works without discovery.</small></article>
+      </div>
+      <p class="footnote">Windows x64 legacy compatibility build · Local recordings · Encrypted client-to-host connections</p>
+    </section>
+    <section id="lobby" hidden>
+      <div class="section-heading"><div><div class="eyebrow">WORK TOGETHER</div><h2>Meeting rooms</h2></div><div><button id="refresh-rooms" class="subtle">Refresh</button><button id="disconnect" class="subtle">Disconnect</button><button id="stop-host" class="danger" hidden>Stop host</button></div></div>
+      <div class="host-details"><div><strong id="host-location"></strong><small>Share this address with your team</small></div><div><span>Host SHA-256 fingerprint</span><code id="host-fingerprint"></code></div></div>
+      <form id="create-room" class="create-row" hidden><input id="room-title" placeholder="New room name" maxlength="100" required><input id="room-password" placeholder="Room password (optional)" type="password" maxlength="128"><label>Capacity<input id="room-capacity" type="number" min="2" max="50" value="25"></label><button class="primary" type="submit">Create room</button></form>
+      <div id="room-list" class="room-list"></div>
+    </section>
+    <section id="meeting" hidden>
+      <div class="section-heading"><div><div class="eyebrow">LIVE ON YOUR LOCAL NETWORK</div><h2 id="meeting-title">Meeting</h2></div><div class="meeting-badges"><span id="recording-indicator" class="record-badge" hidden>● Recording in progress</span><span id="member-count" class="badge"></span><button id="leave" class="danger">Leave room</button></div></div>
+      <div class="meeting-layout"><div class="stage"><div id="empty-stage"><div class="orbit">◉</div><h3>You’re in the room</h3><p>Turn on your microphone, camera, or share a screen to get started.</p></div><div id="videos" class="video-grid"></div><div id="audio-streams"></div></div><aside class="people"><div class="people-heading"><h3>People</h3><button id="lock-room" class="subtle" hidden>Lock</button></div><div id="participants"></div></aside></div>
+      <div class="toolbar"><button id="microphone">Mic off</button><button id="camera">Camera off</button><button id="screen">Share screen</button><span class="toolbar-divider"></span><button id="record" disabled>Record locally</button><button id="devices" class="subtle">Devices</button><span id="quality">LAN · WebRTC</span></div>
+      <p class="footnote">Up to 4 remote cameras + 1 shared screen. Recording includes subscribed media and your microphone. Host can manage in-app recording.</p>
+    </section>
+    <footer><span>PRIVATE BY LOCATION</span><span id="footer-status">Ready when you are.</span></footer>
+  </main>
+  <dialog id="pair-dialog"><h2>Verify your host</h2><p>Compare this entire SHA-256 fingerprint with the one displayed on the host computer, using a trusted channel.</p><code id="pair-fingerprint"></code><p id="pair-warning"></p><label class="checkbox"><input id="pair-verified" type="checkbox">I verified the host fingerprint independently.</label><div class="dialog-actions"><button id="pair-cancel">Cancel</button><button id="pair-connect" class="primary" disabled>Trust & connect</button></div></dialog>
+  <dialog id="password-dialog"><h2>Enter room password</h2><form id="join-form"><input id="join-password" type="password" maxlength="128" required><div class="dialog-actions"><button type="button" id="join-cancel">Cancel</button><button class="primary">Join room</button></div></form></dialog>
+  <dialog id="capture-dialog"><h2>Choose what to share</h2><p>Only the selected screen or window will be sent to this room.</p><div id="capture-sources"></div><button id="capture-cancel">Cancel</button></dialog>
+  <dialog id="devices-dialog"><h2>Audio & video devices</h2><label>Microphone<select id="audio-input"></select></label><label>Camera<select id="video-input"></select></label><label>Speakers<select id="audio-output"></select></label><p>Changes apply when you next turn the device on. Use headphones to reduce echo.</p><button id="devices-close" class="primary">Done</button></dialog>
+  <script src="renderer.js"></script>
+</body>
+</html>
