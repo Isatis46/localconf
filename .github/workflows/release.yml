@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
-      LOCALCONF_BUILD_ROOT: ${{ runner.temp }}/localconf-build
+      LOCALCONF_BUILD_ROOT: /tmp/localconf-build
     steps:
       - name: Check out the exact release tag
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
